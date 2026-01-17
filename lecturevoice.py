@@ -740,6 +740,5 @@ st.markdown("""
 <div class="footer">
     <h3 style="color: #A5B4FC; margin-top: 0;">🎓 Lecture Voice AI</h3>
     <p><strong>Powered by Assembly AI (Speech-to-Text) & Groq AI (Ultra-Fast Processing)</strong></p>
-    <p style="font-size: 11px; margin-top: 10px; color: #10B981;">✅ 100% FREE - No credit card required - Ultra-fast responses (Llama 3.3)</p>
 </div>
 """, unsafe_allow_html=True)
