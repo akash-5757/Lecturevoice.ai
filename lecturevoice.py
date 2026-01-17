@@ -574,7 +574,7 @@ with tab1:
             )
             
             st.markdown("### Generate Study Materials")
-            st.success("⚡ Powered by Groq AI (Llama 3.3) - Ultra-fast responses (< 30 seconds)", icon="✨")
+            st.success("Powered by Groq AI (Llama 3.3)")
             
             col1, col2, col3 = st.columns(3)
             
@@ -739,6 +739,6 @@ st.markdown("---")
 st.markdown("""
 <div class="footer">
     <h3 style="color: #A5B4FC; margin-top: 0;">🎓 Lecture Voice AI</h3>
-    <p><strong>Powered by Assembly AI (Speech-to-Text) & Groq AI (Ultra-Fast Processing)</strong></p>
+    <p><strong>Powered by Assembly AI & Groq AI </strong></p>
 </div>
 """, unsafe_allow_html=True)
