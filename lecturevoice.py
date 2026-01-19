@@ -32,6 +32,29 @@ st.markdown("""
     --error: #EF4444;
 }
 
+/* Bigger tabs */
+.element-container .stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+}
+
+.element-container .stTabs [data-baseweb="tab"] {
+    height: 60px !important;
+    padding: 0 32px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    border-radius: 16px 16px 0 0 !important;
+    margin-bottom: -2px !important;
+}
+
+.element-container .stTabs [data-baseweb="tab"]:hover {
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.element-container .stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4) !important;
+}
+
 .main {
     background: linear-gradient(135deg, #0F172A 0%, #1A1F36 100%);
 }
@@ -66,10 +89,11 @@ h1, h2, h3 {
 
 /* Large modern buttons for generate section */
 .large-btn button {
-    padding: 18px 32px !important;
-    font-size: 16px !important;
+    padding: 20px 36px !important;
+    font-size: 17px !important;
     border-radius: 16px !important;
     box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4) !important;
+    height: 70px !important;
 }
 
 .large-btn button:hover {
@@ -103,7 +127,7 @@ h1, h2, h3 {
 .card {
     background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
     border-radius: 20px;
-    padding: 28px;
+    padding: 32px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 2rem;
@@ -116,15 +140,26 @@ h1, h2, h3 {
     transform: translateY(-4px);
 }
 
-.download-btn button {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
-    padding: 12px 24px !important;
-    font-size: 14px !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3) !important;
+/* Clean download buttons - left aligned */
+.download-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
 }
 
-.download-btn button:hover {
+.download-section button {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
+    padding: 14px 28px !important;
+    font-size: 15px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3) !important;
+    width: 100%;
+    justify-content: center;
+}
+
+.download-section button:hover {
     box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4) !important;
     transform: translateY(-2px) !important;
 }
@@ -296,53 +331,55 @@ st.markdown("Convert lectures to transcripts and study materials")
 st.markdown("---")
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["Transcribe Lecture", "Study Materials", "Ask Professor"])
+tab1, tab2, tab3 = st.tabs(["🎓 Transcribe Lecture", "📚 Study Materials", "👨‍🏫 Ask Professor"])
 
 # Tab 1 - Upload and transcribe
 with tab1:
-    st.markdown("## Upload lecture")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("## 📤 Upload lecture")
     
     col1, col2 = st.columns([2, 1])
     
     with col1:
         uploaded_file = st.file_uploader(
             "Choose audio/video file",
-            type=["mp3", "wav", "m4a", "mp4", "avi", "mov", "flac", "ogg", "webm"]
+            type=["mp3", "wav", "m4a", "mp4", "avi", "mov", "flac", "ogg", "webm"],
+            help="Supports most audio/video formats"
         )
     
     if uploaded_file:
         with col2:
-            st.info(f"Selected: {uploaded_file.name}")
+            st.success(f"✅ {uploaded_file.name}")
         
         temp_file = f"temp_{uploaded_file.name}"
         with open(temp_file, "wb") as f:
             f.write(uploaded_file.getbuffer())
         
-        if st.button("Start transcription", use_container_width=True, key="transcribe"):
+        if st.button("🚀 Start transcription", use_container_width=True, key="transcribe"):
             transcript = transcribe_audio(temp_file)
             if transcript:
                 st.session_state.transcript = transcript
                 st.session_state.transcript_text = transcript.text
-                st.success("✅ Transcription done!")
+                st.success("✅ Transcription completed!")
                 try:
                     os.remove(temp_file)
                 except:
                     pass
         
         if st.session_state.transcript:
-            st.markdown("### Transcript")
+            st.markdown("### 📄 Full Transcript")
             
             st.markdown('<div class="transcript-area">', unsafe_allow_html=True)
-            transcript_display = st.text_area(
-                "",
+            st.text_area(
+                "Transcript",
                 st.session_state.transcript_text,
-                height=220,
+                height=280,
                 disabled=True,
                 key="transcript_view"
             )
             st.markdown('</div>', unsafe_allow_html=True)
             
-            st.markdown("### Create study materials")
+            st.markdown("### ✨ Generate Study Materials")
             col1, col2, col3 = st.columns(3)
             
             with col1:
@@ -351,7 +388,7 @@ with tab1:
                     result = generate_summary(st.session_state.transcript_text)
                     st.session_state.summary = result
                     st.session_state.materials_ready = True
-                    st.success("Summary created! Check Study Materials tab")
+                    st.success("✅ Summary ready in Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
@@ -360,7 +397,7 @@ with tab1:
                     result = generate_quiz(st.session_state.transcript_text)
                     st.session_state.quiz = result
                     st.session_state.materials_ready = True
-                    st.success("Quiz created! Check Study Materials tab")
+                    st.success("✅ Quiz ready in Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
@@ -369,119 +406,117 @@ with tab1:
                     result = generate_flashcards(st.session_state.transcript_text)
                     st.session_state.flashcards = result
                     st.session_state.materials_ready = True
-                    st.success("Flashcards created! Check Study Materials tab")
+                    st.success("✅ Flashcards ready in Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
             
+            st.markdown('<div class="download-section">', unsafe_allow_html=True)
             st.download_button(
-                "Download transcript",
+                "💾 Download Transcript",
                 st.session_state.transcript_text,
                 f"transcript_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                 "text/plain",
                 use_container_width=True
             )
+            st.markdown('</div>', unsafe_allow_html=True)
     
     else:
-        st.info("Upload a file to start")
+        st.info("👆 Upload an audio/video file to get started")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# Tab 2 - Study materials  
+# Tab 2 - Study materials (CLEAN - no interactive buttons)
 with tab2:
-    st.markdown("## Study Materials")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("## 📚 Study Materials")
     
     if st.session_state.transcript:
         if st.session_state.summary:
-            st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### 📝 Lecture Summary")
             st.markdown(st.session_state.summary)
-            col1, col2 = st.columns([3, 1])
-            with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button(
-                    "Download",
-                    st.session_state.summary,
-                    f"summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
-                    "text/plain",
-                    use_container_width=True,
-                    key="dl_summary"
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('<div class="download-section">', unsafe_allow_html=True)
+            st.download_button(
+                "💾 Download Summary",
+                st.session_state.summary,
+                f"summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                "text/plain",
+                use_container_width=True,
+                key="dl_summary"
+            )
             st.markdown('</div>', unsafe_allow_html=True)
         
         if st.session_state.quiz:
-            st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### ❓ Quiz Questions")
             st.markdown(st.session_state.quiz)
-            col1, col2 = st.columns([3, 1])
-            with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button(
-                    "Download", 
-                    st.session_state.quiz,
-                    f"quiz_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
-                    "text/plain",
-                    use_container_width=True,
-                    key="dl_quiz"
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('<div class="download-section">', unsafe_allow_html=True)
+            st.download_button(
+                "💾 Download Quiz", 
+                st.session_state.quiz,
+                f"quiz_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                "text/plain",
+                use_container_width=True,
+                key="dl_quiz"
+            )
             st.markdown('</div>', unsafe_allow_html=True)
         
         if st.session_state.flashcards:
-            st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### 🎴 Flashcards")
             st.markdown(st.session_state.flashcards)
-            col1, col2 = st.columns([3, 1])
-            with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button(
-                    "Download",
-                    st.session_state.flashcards,
-                    f"flashcards_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
-                    "text/plain",
-                    use_container_width=True,
-                    key="dl_flash"
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('<div class="download-section">', unsafe_allow_html=True)
+            st.download_button(
+                "💾 Download Flashcards",
+                st.session_state.flashcards,
+                f"flashcards_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                "text/plain",
+                use_container_width=True,
+                key="dl_flash"
+            )
             st.markdown('</div>', unsafe_allow_html=True)
         
         if not st.session_state.summary and not st.session_state.quiz and not st.session_state.flashcards:
-            st.info("Create materials in the Transcribe tab")
+            st.info("✨ Generate materials from the Transcribe tab first")
     else:
-        st.info("Transcribe a lecture first")
+        st.info("📤 Transcribe a lecture first in the Transcribe tab")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Tab 3 - Ask professor
 with tab3:
-    st.markdown("## Ask Professor")
-    st.markdown("Ask about the lecture or any topic")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown("## 👨‍🏫 Ask Professor")
+    st.markdown("Ask about the lecture content or any related topic")
     
     if not st.session_state.transcript:
-        st.info("Transcribe a lecture first")
+        st.info("📤 Please transcribe a lecture first")
     else:
         if st.session_state.chat_history:
-            st.markdown("### Chat History")
+            st.markdown("### 💬 Chat History")
             for msg in st.session_state.chat_history:
                 if msg["role"] == "user":
-                    st.markdown(f"**You:** {msg['content']}")
+                    st.markdown(f"**🧑 You:** {msg['content']}")
                 else:
-                    st.markdown(f"**Professor:** {msg['content']}")
+                    st.markdown(f"**👨‍🏫 Professor:** {msg['content']}")
         
-        st.markdown("### Ask question")
+        st.markdown("### ❓ Your Question")
         
         with st.form("chat_form"):
-            question = st.text_input("", placeholder="What was the main topic?")
-            send = st.form_submit_button("Send")
+            question = st.text_input("", placeholder="What was the main topic of the lecture?", key="question_input")
+            send = st.form_submit_button("💬 Send", use_container_width=True)
         
         if send and question:
             st.session_state.chat_history.append({"role": "user", "content": question})
-            answer = ask_professor(question, st.session_state.transcript_text)
+            with st.spinner("Professor is thinking..."):
+                answer = ask_professor(question, st.session_state.transcript_text)
             st.session_state.chat_history.append({"role": "assistant", "content": answer})
             st.rerun()
         
-        st.button("Clear chat", key="clear_chat")
+        if st.button("🗑️ Clear Chat History", key="clear_chat", use_container_width=True):
+            st.session_state.chat_history = []
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #94A3B8; padding: 24px; border-top: 1px solid #334155; margin-top: 3rem;'>
     <h3 style='color: #A5B4FC; margin-top: 0;'>Lecture Voice AI</h3>
-    <p><strong>Made with AssemblyAI + Groq</strong></p>
+    <p><strong>Powered by AssemblyAI + Groq</strong> | Made for students</p>
 </div>
 """, unsafe_allow_html=True)
