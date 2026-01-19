@@ -482,7 +482,7 @@ st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #94A3B8; padding: 24px; border-top: 1px solid #334155; margin-top: 3rem;'>
     <h3 style='color: #A5B4FC; margin-top: 0;'>Lecture Voice AI</h3>
-    <p><strong>Made with AssemblyAI + Groq</strong></p>
+    <p><strong>Made with Assembly AI + Groq AI</strong></p>
 </div>
 """, unsafe_allow_html=True)
 
