@@ -41,6 +41,37 @@ h1, h2, h3 {
     font-weight: 700;
 }
 
+/* Enhanced Tab Styling */
+.stTabs [data-baseweb="tab-list"] {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%) !important;
+    border-radius: 16px !important;
+    padding: 8px !important;
+    margin-bottom: 2rem !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: var(--text-secondary) !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    margin: 4px !important;
+    transition: all 0.3s ease !important;
+    height: auto !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: var(--text-primary) !important;
+    background: rgba(99, 102, 241, 0.2) !important;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    color: white !important;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4) !important;
+}
+
 .stButton button {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
     color: white !important;
@@ -75,6 +106,26 @@ h1, h2, h3 {
 .large-btn button:hover {
     box-shadow: 0 20px 40px rgba(99, 102, 241, 0.5) !important;
     transform: translateY(-3px) !important;
+}
+
+/* Chat input styling */
+.chat-input {
+    position: relative;
+}
+
+.chat-send-btn button {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
+    border-radius: 0 12px 12px 0 !important;
+    margin-left: -2px !important;
+    padding: 14px 20px !important;
+    font-size: 14px !important;
+    height: 54px !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3) !important;
+}
+
+.chat-send-btn button:hover {
+    box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4) !important;
 }
 
 .stTextInput input, .stTextArea textarea {
@@ -296,7 +347,7 @@ st.markdown("Convert lectures to transcripts and study materials")
 st.markdown("---")
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["Transcribe Lecture", "Study Materials", "Ask Professor"])
+tab1, tab2, tab3 = st.tabs(["🎓 Transcribe Lecture", "📚 Study Materials", "💬 Ask Professor"])
 
 # Tab 1 - Upload and transcribe
 with tab1:
@@ -465,15 +516,18 @@ with tab3:
         
         st.markdown("### Ask question")
         
-        with st.form("chat_form"):
-            question = st.text_input("", placeholder="What was the main topic?")
-            send = st.form_submit_button("Send")
-        
-        if send and question:
-            st.session_state.chat_history.append({"role": "user", "content": question})
-            answer = ask_professor(question, st.session_state.transcript_text)
-            st.session_state.chat_history.append({"role": "assistant", "content": answer})
-            st.rerun()
+        col1, col2 = st.columns([4, 1])
+        with col1:
+            question = st.text_input("", placeholder="What was the main topic?", key="question_input")
+        with col2:
+            st.markdown('<div class="chat-send-btn">', unsafe_allow_html=True)
+            if st.button("Send", key="send_chat"):
+                if question:
+                    st.session_state.chat_history.append({"role": "user", "content": question})
+                    answer = ask_professor(question, st.session_state.transcript_text)
+                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                    st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.button("Clear chat", key="clear_chat")
 
