@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS for styling
+# CSS for styling (unchanged)
 st.markdown("""
 <style>
 :root {
@@ -62,19 +62,6 @@ h1, h2, h3 {
 
 .stButton button:active {
     transform: translateY(0) !important;
-}
-
-/* Large modern buttons for generate section */
-.large-btn button {
-    padding: 18px 32px !important;
-    font-size: 16px !important;
-    border-radius: 16px !important;
-    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4) !important;
-}
-
-.large-btn button:hover {
-    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.5) !important;
-    transform: translateY(-3px) !important;
 }
 
 .stTextInput input, .stTextArea textarea {
@@ -342,35 +329,7 @@ with tab1:
             )
             st.markdown('</div>', unsafe_allow_html=True)
             
-            st.markdown("### Create study materials")
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.markdown('<div class="large-btn">', unsafe_allow_html=True)
-                if st.button("📝 Summary", use_container_width=True, key="summary_gen"):
-                    result = generate_summary(st.session_state.transcript_text)
-                    st.session_state.summary = result
-                    st.session_state.materials_ready = True
-                    st.success("Summary created! Check Study Materials tab")
-                st.markdown('</div>', unsafe_allow_html=True)
-            
-            with col2:
-                st.markdown('<div class="large-btn">', unsafe_allow_html=True)
-                if st.button("❓ Quiz", use_container_width=True, key="quiz_gen"):
-                    result = generate_quiz(st.session_state.transcript_text)
-                    st.session_state.quiz = result
-                    st.session_state.materials_ready = True
-                    st.success("Quiz created! Check Study Materials tab")
-                st.markdown('</div>', unsafe_allow_html=True)
-            
-            with col3:
-                st.markdown('<div class="large-btn">', unsafe_allow_html=True)
-                if st.button("🎴 Flashcards", use_container_width=True, key="flash_gen"):
-                    result = generate_flashcards(st.session_state.transcript_text)
-                    st.session_state.flashcards = result
-                    st.session_state.materials_ready = True
-                    st.success("Flashcards created! Check Study Materials tab")
-                st.markdown('</div>', unsafe_allow_html=True)
+            # ✅ REMOVED: The 3 generate buttons (Summary/Quiz/Flashcards)
             
             st.download_button(
                 "Download transcript",
@@ -383,11 +342,12 @@ with tab1:
     else:
         st.info("Upload a file to start")
 
-# Tab 2 - Study materials  
+# Tab 2 - Study materials (CLEAN - NO BUTTONS)
 with tab2:
     st.markdown("## Study Materials")
     
     if st.session_state.transcript:
+        # Summary card (download button only)
         if st.session_state.summary:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### 📝 Lecture Summary")
@@ -396,7 +356,7 @@ with tab2:
             with col2:
                 st.markdown('<div class="download-btn">', unsafe_allow_html=True)
                 st.download_button(
-                    "Download",
+                    "📥 Download",
                     st.session_state.summary,
                     f"summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                     "text/plain",
@@ -406,6 +366,7 @@ with tab2:
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
+        # Quiz card (download button only)
         if st.session_state.quiz:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### ❓ Quiz Questions")
@@ -414,7 +375,7 @@ with tab2:
             with col2:
                 st.markdown('<div class="download-btn">', unsafe_allow_html=True)
                 st.download_button(
-                    "Download", 
+                    "📥 Download", 
                     st.session_state.quiz,
                     f"quiz_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                     "text/plain",
@@ -424,6 +385,7 @@ with tab2:
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
+        # Flashcards card (download button only)
         if st.session_state.flashcards:
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("### 🎴 Flashcards")
@@ -432,7 +394,7 @@ with tab2:
             with col2:
                 st.markdown('<div class="download-btn">', unsafe_allow_html=True)
                 st.download_button(
-                    "Download",
+                    "📥 Download",
                     st.session_state.flashcards,
                     f"flashcards_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                     "text/plain",
@@ -443,11 +405,11 @@ with tab2:
             st.markdown('</div>', unsafe_allow_html=True)
         
         if not st.session_state.summary and not st.session_state.quiz and not st.session_state.flashcards:
-            st.info("Create materials in the Transcribe tab")
+            st.info("👈 Create materials using buttons in Transcribe tab first")
     else:
-        st.info("Transcribe a lecture first")
+        st.info("👈 Transcribe a lecture first in Transcribe tab")
 
-# Tab 3 - Ask professor
+# Tab 3 - Ask professor (unchanged)
 with tab3:
     st.markdown("## Ask Professor")
     st.markdown("Ask about the lecture or any topic")
@@ -485,5 +447,3 @@ st.markdown("""
     <p><strong>Made with AssemblyAI + Groq</strong></p>
 </div>
 """, unsafe_allow_html=True)
-
-
