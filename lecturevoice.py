@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS for modern styling
+# Premium CSS
 st.markdown("""
 <style>
 :root {
@@ -22,374 +22,370 @@ st.markdown("""
     --secondary: #EC4899;
     --accent: #06B6D4;
     --accent-light: #22D3EE;
-    --background: #0F172A;
-    --surface: #1E293B;
-    --surface-light: #334155;
-    --surface-hover: #475569;
-    --text-primary: #F1F5F9;
+    --background: #0A0E1F;
+    --surface: #1A1F2E;
+    --surface-light: #2A2F45;
+    --surface-hover: #3A3F55;
+    --glass: rgba(255, 255, 255, 0.05);
+    --text-primary: #F8FAFC;
     --text-secondary: #CBD5E1;
     --text-muted: #94A3B8;
     --success: #10B981;
-    --error: #EF4444;
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .main {
-    background: linear-gradient(135deg, #0F172A 0%, #1A1F36 100%);
+    background: linear-gradient(135deg, var(--background) 0%, #1A1F36 50%, #0F172A 100%);
+    backdrop-filter: blur(20px);
 }
 
-h1, h2, h3 {
-    color: var(--text-primary);
-    font-weight: 700;
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+    border-radius: 32px;
+    margin: 2rem 0;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass);
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
 }
 
-/* Modern large buttons */
-.modern-btn button {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+.hero h1 {
+    font-size: 4.5rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-light) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    margin: 0 0 1rem 0 !important;
+    letter-spacing: -0.05em !important;
+}
+
+.hero p {
+    font-size: 1.5rem !important;
+    color: var(--text-secondary) !important;
+    max-width: 600px;
+    margin: 0 auto !important;
+    line-height: 1.6 !important;
+}
+
+/* Feature sections */
+.feature-section {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+    border-radius: 32px;
+    margin: 2rem 0;
+    border: 1px solid var(--glass);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-section:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 36px 96px rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Feature title */
+.feature-title {
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Feature subtitle */
+.feature-subtitle {
+    font-size: 1.3rem !important;
+    color: var(--text-muted) !important;
+    max-width: 500px;
+    margin: 0 auto 3rem auto !important;
+}
+
+/* Ultra modern buttons */
+.premium-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-light) 100%) !important;
     color: white !important;
     border: none !important;
-    border-radius: 16px !important;
-    padding: 18px 36px !important;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4) !important;
-    border: 2px solid transparent !important;
-    height: 64px !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 24px !important;
+    padding: 24px 48px !important;
+    font-weight: 800 !important;
+    font-size: 20px !important;
+    box-shadow: 0 24px 64px rgba(99, 102, 241, 0.5) !important;
+    height: 80px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: 1px !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
-.modern-btn button:hover {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-light) 100%) !important;
-    box-shadow: 0 20px 48px rgba(99, 102, 241, 0.5) !important;
+.premium-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.premium-btn:hover::before {
+    left: 100%;
+}
+
+.premium-btn:hover {
+    background: linear-gradient(135deg, var(--accent-light) 0%, var(--secondary) 100%) !important;
+    box-shadow: 0 36px 96px rgba(99, 102, 241, 0.6) !important;
+    transform: translateY(-8px) scale(1.05) !important;
+}
+
+.premium-btn:active {
     transform: translateY(-4px) scale(1.02) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.modern-btn button:active {
-    transform: translateY(-2px) scale(1.0) !important;
+/* Cards and other styles */
+.card {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass);
+    margin-bottom: 2.5rem;
+    backdrop-filter: blur(20px);
 }
 
-/* Generate buttons - even larger */
-.generate-btn button {
-    padding: 22px 44px !important;
-    font-size: 18px !important;
-    height: 72px !important;
-    border-radius: 20px !important;
-    box-shadow: 0 16px 40px rgba(99, 102, 241, 0.5) !important;
-}
-
-.generate-btn button:hover {
-    box-shadow: 0 24px 60px rgba(99, 102, 241, 0.6) !important;
-    transform: translateY(-6px) scale(1.03) !important;
-}
-
-/* Download buttons */
-.download-btn button {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
-    padding: 14px 28px !important;
-    font-size: 15px !important;
-    border-radius: 14px !important;
-    box-shadow: 0 10px 28px rgba(6, 182, 212, 0.4) !important;
-}
-
-.download-btn button:hover {
-    box-shadow: 0 16px 40px rgba(6, 182, 212, 0.5) !important;
-    transform: translateY(-3px) scale(1.02) !important;
-}
-
-/* Chat input styling */
 .chat-input input {
-    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%) !important;
-    border: 2px solid var(--surface-hover) !important;
-    border-radius: 14px !important;
+    background: linear-gradient(135deg, var(--surface-light) 0%, var(--surface-hover) 100%) !important;
+    border: 2px solid var(--glass) !important;
+    border-radius: 20px !important;
     color: var(--text-primary) !important;
-    padding: 16px 20px !important;
-    font-size: 15px !important;
-    height: 56px !important;
+    padding: 20px 24px !important;
+    font-size: 16px !important;
+    height: 64px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
 }
 
-.chat-input input:focus {
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
-}
-
-/* Send button for chat */
 .send-btn button {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%) !important;
-    padding: 16px 24px !important;
-    font-size: 15px !important;
-    border-radius: 14px !important;
-    height: 56px !important;
-    box-shadow: 0 10px 28px rgba(6, 182, 212, 0.4) !important;
-    margin-left: 12px !important;
-}
-
-.send-btn button:hover {
-    box-shadow: 0 16px 40px rgba(6, 182, 212, 0.5) !important;
-    transform: translateY(-3px) !important;
-}
-
-.stTextInput input, .stTextArea textarea {
-    background-color: var(--surface-light) !important;
-    border: 2px solid var(--surface-light) !important;
-    border-radius: 10px !important;
-    color: var(--text-primary) !important;
-    padding: 12px !important;
+    padding: 20px 28px !important;
+    font-size: 16px !important;
+    border-radius: 20px !important;
+    height: 64px !important;
+    box-shadow: 0 12px 40px rgba(6, 182, 212, 0.4) !important;
+    margin-left: 16px !important;
 }
 
 .transcript-area textarea {
-    background-color: #0A0E27 !important;
+    background: linear-gradient(135deg, #0A0E27 0%, #1A1F36 100%) !important;
     color: #E0F2FE !important;
-    font-family: 'Courier New', monospace !important;
-    border: 3px solid #06B6D4 !important;
-    border-radius: 12px !important;
-    padding: 18px !important;
-    font-size: 14px !important;
-}
-
-.card {
-    background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
-    border-radius: 24px;
-    padding: 32px;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 2.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card:hover {
-    box-shadow: 0 24px 72px rgba(99, 102, 241, 0.3);
-    border-color: rgba(99, 102, 241, 0.3);
-    transform: translateY(-6px);
-}
-
-.stSuccess, .stInfo {
-    border-radius: 12px !important;
-    padding: 18px !important;
-    backdrop-filter: blur(12px) !important;
+    font-family: 'SF Mono', Monaco, monospace !important;
+    border: 3px solid rgba(6, 182, 212, 0.5) !important;
+    border-radius: 20px !important;
+    padding: 24px !important;
+    font-size: 15px !important;
+    box-shadow: 0 12px 40px rgba(6, 182, 212, 0.2) !important;
 }
 
 [data-testid="stFileUploadDropzone"] {
     border: 3px dashed var(--primary-light) !important;
-    border-radius: 16px !important;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%) !important;
-    padding: 24px !important;
+    border-radius: 24px !important;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(6, 182, 212, 0.08) 100%) !important;
+    padding: 32px !important;
+    backdrop-filter: blur(20px) !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# API keys
+# APIs
 ASSEMBLYAI_API_KEY = "db53042d34f64c23a815538eab44aa86"
 GROQ_API_KEY = "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"
 
-# Setup APIs
 try:
     aai.settings.api_key = ASSEMBLYAI_API_KEY
     groq_client = Groq(api_key=GROQ_API_KEY)
-except:
-    st.error("API setup failed")
+except: st.error("API Error")
 
-# All functions (same as before but shorter)
+# Functions (shortened)
 def transcribe_audio(file_path):
     try:
-        with st.spinner("Transcribing..."):
-            transcriber = aai.Transcriber()
-            return transcriber.transcribe(file_path)
-    except Exception as e:
-        st.error(f"Transcription failed: {str(e)}")
-        return None
+        with st.spinner("🔄 Processing..."):
+            return aai.Transcriber().transcribe(file_path)
+    except: st.error("Transcription failed"); return None
 
-def call_groq_api(prompt, max_tokens=1500):
-    for i in range(3):
+def call_groq(prompt, tokens=1500):
+    for _ in range(3):
         try:
-            response = groq_client.chat.completions.create(
-                messages=[{"role": "system", "content": "Clear professor explaining simply."}, {"role": "user", "content": prompt}],
-                model="llama-3.3-70b-versatile",
-                max_tokens=max_tokens,
-                temperature=0.7
+            resp = groq_client.chat.completions.create(
+                messages=[{"role": "system", "content": "Professional professor."}, {"role": "user", "content": prompt}],
+                model="llama-3.3-70b-versatile", max_tokens=tokens, temperature=0.7
             )
-            return response.choices[0].message.content
-        except:
-            if i < 2: time.sleep(2)
+            return resp.choices[0].message.content
+        except: time.sleep(2)
     return None
 
-def generate_summary(transcript_text):
-    prompt = f"Summarize: {transcript_text[:2500]}"
-    return call_groq_api(prompt, 1000) or "Failed"
-
-def generate_quiz(transcript_text):
-    prompt = f"5 quiz questions: {transcript_text[:2500]}"
-    return call_groq_api(prompt, 1500) or "Failed"
-
-def generate_flashcards(transcript_text):
-    prompt = f"10 flashcards: {transcript_text[:2500]}"
-    return call_groq_api(prompt, 1500) or "Failed"
-
-def ask_professor(question, transcript_text):
-    prompt = f"Answer: {question}\nLecture: {transcript_text[:2000]}"
-    return call_groq_api(prompt, 500) or "Failed"
-
 # Session state
-for key in ['transcript', 'transcript_text', 'summary', 'quiz', 'flashcards', 'chat_history', 'materials_ready']:
-    if key not in st.session_state:
-        st.session_state[key] = None if key != 'chat_history' and key != 'materials_ready' else []
-        if key == 'materials_ready': st.session_state[key] = False
+for k in ['transcript','transcript_text','summary','quiz','flashcards','chat_history','materials_ready']:
+    if k not in st.session_state: st.session_state[k] = [] if k=='chat_history' else (False if k=='materials_ready' else None)
 
-# Title
-st.markdown("# 🎓 Lecture Voice AI")
-st.markdown("**Modern AI for lecture processing**")
-st.markdown("---")
+# HERO HEADER
+st.markdown("""
+<div class="hero">
+    <h1>Lecture Voice AI</h1>
+    <p>Transform your lecture recordings into interactive study materials with cutting-edge AI</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["📤 Transcribe", "📚 Materials", "💬 Professor"])
+tab1, tab2, tab3 = st.tabs(["🎤 Transcribe Lecture", "📚 Study Materials", "💬 Professor AI"])
 
+# SECTION 1: TRANSCRIBE
 with tab1:
-    st.markdown("### Upload & Process")
+    st.markdown('<div class="feature-section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="feature-title">Transcribe & Analyze</h2>')
+    st.markdown('<p class="feature-subtitle">Upload any audio/video lecture and get instant AI transcription</p>')
     
-    col1, col2 = st.columns([3, 1])
+    col1, col2 = st.columns([3,1])
     with col1:
-        uploaded_file = st.file_uploader("Upload audio/video", 
-            type=["mp3", "wav", "m4a", "mp4", "avi", "mov"])
+        uploaded_file = st.file_uploader("📁 Upload Lecture", 
+            type=['mp3','wav','m4a','mp4','avi','mov','flac','ogg','webm'])
     
     if uploaded_file:
-        with col2: st.info(f"**{uploaded_file.name}**")
+        with col2: st.success(f"**{uploaded_file.name}**")
         
         tfile = f"temp_{uploaded_file.name}"
-        with open(tfile, "wb") as f: f.write(uploaded_file.getbuffer())
+        with open(tfile,"wb") as f: f.write(uploaded_file.getbuffer())
         
-        st.markdown('<div class="modern-btn">', unsafe_allow_html=True)
-        if st.button("🚀 START TRANSCRIPTION", use_container_width=True, key="transcribe_btn"):
+        st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+        if st.button("🚀 TRANSCRIBE LECTURE", use_container_width=True):
             transcript = transcribe_audio(tfile)
             if transcript:
                 st.session_state.transcript = transcript
                 st.session_state.transcript_text = transcript.text
-                st.success("✅ Done!")
+                st.rerun()
                 try: os.remove(tfile)
                 except: pass
         st.markdown('</div>', unsafe_allow_html=True)
         
         if st.session_state.transcript:
-            st.markdown("### 📄 Full Transcript")
+            st.markdown("### 📄 Complete Transcript")
             st.markdown('<div class="transcript-area">', unsafe_allow_html=True)
-            st.text_area("", st.session_state.transcript_text, height=240, disabled=True, key="transcript_area")
+            st.text_area("", st.session_state.transcript_text, height=280, disabled=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+            st.download_button("💾 SAVE TRANSCRIPT", st.session_state.transcript_text, 
+                f"lecture_{datetime.now().strftime('%Y%m%d_%H%M')}.txt", use_container_width=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
-            st.download_button("💾 Download TXT", st.session_state.transcript_text, 
-                f"transcript_{datetime.now().strftime('%Y%m%d')}.txt", use_container_width=True)
-            
-            st.markdown("### ✨ Generate Study Materials")
-            col1, col2, col3 = st.columns(3)
-            
+            st.markdown('<h3 style="color: var(--text-secondary);">✨ Generate Study Materials</h3>')
+            col1,col2,col3 = st.columns(3)
             with col1:
-                st.markdown('<div class="generate-btn">', unsafe_allow_html=True)
-                if st.button("📝 SUMMARY", use_container_width=True, key="gen_summary"):
-                    st.session_state.summary = generate_summary(st.session_state.transcript_text)
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                if st.button("📝 CREATE SUMMARY", use_container_width=True, key="sum_btn"):
+                    st.session_state.summary = call_groq_api(f"Summarize lecture:\n{st.session_state.transcript_text[:3000]}")
                     st.session_state.materials_ready = True
-                    st.success("✅ Summary ready!")
+                    st.success("✅ Check Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
-            
             with col2:
-                st.markdown('<div class="generate-btn">', unsafe_allow_html=True)
-                if st.button("❓ QUIZ", use_container_width=True, key="gen_quiz"):
-                    st.session_state.quiz = generate_quiz(st.session_state.transcript_text)
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                if st.button("❓ GENERATE QUIZ", use_container_width=True, key="quiz_btn"):
+                    st.session_state.quiz = call_groq_api(f"5 quiz questions:\n{st.session_state.transcript_text[:3000]}")
                     st.session_state.materials_ready = True
-                    st.success("✅ Quiz ready!")
+                    st.success("✅ Check Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
-            
             with col3:
-                st.markdown('<div class="generate-btn">', unsafe_allow_html=True)
-                if st.button("🎴 FLASHCARDS", use_container_width=True, key="gen_flash"):
-                    st.session_state.flashcards = generate_flashcards(st.session_state.transcript_text)
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                if st.button("🎴 MAKE FLASHCARDS", use_container_width=True, key="flash_btn"):
+                    st.session_state.flashcards = call_groq_api(f"10 flashcards:\n{st.session_state.transcript_text[:3000]}")
                     st.session_state.materials_ready = True
-                    st.success("✅ Flashcards ready!")
+                    st.success("✅ Check Study Materials tab!")
                 st.markdown('</div>', unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
+# SECTION 2: MATERIALS
 with tab2:
-    st.markdown("### 📚 Your Study Materials")
+    st.markdown('<div class="feature-section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="feature-title">📚 Study Materials</h2>')
+    st.markdown('<p class="feature-subtitle">Professional study resources generated instantly from your lecture</p>')
     
     if st.session_state.transcript:
         if st.session_state.summary:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.markdown("#### 📝 Lecture Summary")
+            st.markdown("### 📝 AI Summary")
             st.markdown(st.session_state.summary)
-            col1, col2 = st.columns([4, 1])
+            col1,col2=st.columns([4,1])
             with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button("💾 Download", st.session_state.summary, 
-                    f"summary_{datetime.now().strftime('%Y%m%d')}.txt", 
-                    use_container_width=True, key="dl_summary")
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                st.download_button("💾 DOWNLOAD", st.session_state.summary, 
+                    f"summary_{datetime.now().strftime('%Y%m%d')}.md", use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
         if st.session_state.quiz:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.markdown("#### ❓ Practice Quiz")
+            st.markdown("### ❓ Practice Quiz")
             st.markdown(st.session_state.quiz)
-            col1, col2 = st.columns([4, 1])
+            col1,col2=st.columns([4,1])
             with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button("💾 Download", st.session_state.quiz, 
-                    f"quiz_{datetime.now().strftime('%Y%m%d')}.txt", 
-                    use_container_width=True, key="dl_quiz")
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                st.download_button("💾 DOWNLOAD", st.session_state.quiz, 
+                    f"quiz_{datetime.now().strftime('%Y%m%d')}.md", use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
         if st.session_state.flashcards:
             st.markdown('<div class="card">', unsafe_allow_html=True)
-            st.markdown("#### 🎴 Flashcards")
+            st.markdown("### 🎴 Flashcards")
             st.markdown(st.session_state.flashcards)
-            col1, col2 = st.columns([4, 1])
+            col1,col2=st.columns([4,1])
             with col2:
-                st.markdown('<div class="download-btn">', unsafe_allow_html=True)
-                st.download_button("💾 Download", st.session_state.flashcards, 
-                    f"flashcards_{datetime.now().strftime('%Y%m%d')}.txt", 
-                    use_container_width=True, key="dl_flash")
+                st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+                st.download_button("💾 DOWNLOAD", st.session_state.flashcards, 
+                    f"flashcards_{datetime.now().strftime('%Y%m%d')}.md", use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
+# SECTION 3: PROFESSOR
 with tab3:
-    st.markdown("### 💬 Ask Professor")
+    st.markdown('<div class="feature-section">', unsafe_allow_html=True)
+    st.markdown('<h2 class="feature-title">💬 AI Professor</h2>')
+    st.markdown('<p class="feature-subtitle">Ask questions about your lecture - instant expert answers</p>')
     
     if st.session_state.transcript:
         if st.session_state.chat_history:
-            st.markdown("#### Chat")
-            for msg in st.session_state.chat_history[-10:]:  # Last 10 messages
-                if msg["role"] == "user":
+            st.markdown("### Recent Conversation")
+            for msg in st.session_state.chat_history[-8:]:
+                if msg["role"]=="user":
                     st.markdown(f"**You:** {msg['content']}")
                 else:
                     st.markdown(f"**🤖 Professor:** {msg['content']}")
         
-        st.markdown("#### Send message")
-        col1, col2 = st.columns([4, 1])
-        
+        col1,col2 = st.columns([4,1])
         with col1:
-            st.markdown('<div class="chat-input">', unsafe_allow_html=True)
-            question = st.text_input("", placeholder="Ask about lecture or concepts...", key="chat_question", label_visibility="collapsed")
-            st.markdown('</div>', unsafe_allow_html=True)
-        
+            question = st.text_input("Ask anything about the lecture...", key="prof_question")
         with col2:
-            st.markdown('<div class="send-btn">', unsafe_allow_html=True)
-            if st.button("Send ➤", key="send_chat"):
+            if st.button("➤ SEND", key="prof_send"):
                 if question:
-                    st.session_state.chat_history.append({"role": "user", "content": question})
-                    answer = ask_professor(question, st.session_state.transcript_text)
-                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
+                    st.session_state.chat_history.append({"role":"user","content":question})
+                    st.session_state.chat_history.append({"role":"assistant","content":call_groq(f"Answer professor style: {question}\nLecture: {st.session_state.transcript_text[:2500]}") or "Processing..."})
                     st.rerun()
-            st.markdown('</div>', unsafe_allow_html=True)
         
-        st.markdown('<div class="modern-btn">', unsafe_allow_html=True)
-        if st.button("🗑️ Clear Chat", use_container_width=True):
-            st.session_state.chat_history = []
-            st.rerun()
+        st.markdown('<div class="premium-btn">', unsafe_allow_html=True)
+        if st.button("🗑️ NEW CONVERSATION", use_container_width=True): st.session_state.chat_history=[]
         st.markdown('</div>', unsafe_allow_html=True)
-    else:
-        st.info("Transcribe first")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("""
-<div style='text-align:center; padding:32px; color:#94A3B8; border-top:1px solid #334155; margin-top:4rem;'>
-    <h3 style='color:#A5B4FC; margin:0;'>Lecture Voice AI</h3>
-    <p><strong>AssemblyAI + Groq AI</strong> | Student Project 2026</p>
-</div>
+<footer style='text-align:center; padding:3rem; color:var(--text-muted); border-top:1px solid var(--glass); margin-top:4rem;'>
+    <h3 style='color:var(--primary-light); margin:0;'>Lecture Voice AI</h3>
+    <p><strong>Powered by AssemblyAI • Groq AI</strong> | Professional Student Project</p>
+</footer>
 """, unsafe_allow_html=True)
