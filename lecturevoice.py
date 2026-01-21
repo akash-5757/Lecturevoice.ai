@@ -235,7 +235,6 @@ TRANSCRIPT:
         result = call_groq_api(prompt, 1500)
         return result if result else "Quiz failed. Try again."
 
-# FIXED: Generate flashcards WITHOUT "Front:" text
 def generate_flashcards(transcript_text):
     prompt = f"""Create exactly 10 flashcards from this lecture transcript.
 
