@@ -98,6 +98,11 @@ h1, h2, h3 {
     border-radius: 10px !important;
     padding: 15px !important;
     font-size: 14px !important;
+    cursor: text !important;
+}
+
+.transcript-area {
+    cursor: text !important;
 }
 
 .card {
@@ -243,13 +248,27 @@ TRANSCRIPT:
         result = call_groq_api(prompt, 1500)
         return result if result else "Quiz failed. Try again."
 
-# Generate flashcards
+# Generate flashcards (FIXED: no Front:/Back: labels)
 def generate_flashcards(transcript_text):
     prompt = f"""Create 10 flashcards from this lecture.
 
-**Card 1:**
-**Front:** [question/term]
-**Back:** [answer]
+Only output like this:
+
+Card 1:
+[question/term]
+[answer]
+
+Card 2:
+[question/term]
+[answer]
+
+...
+
+Card 10:
+[question/term]
+[answer]
+
+Do not use the words 'Front:' or 'Back:' anywhere. Just the card number, question, and answer.
 
 ---
 
@@ -258,6 +277,9 @@ TRANSCRIPT:
     
     with st.spinner("Creating flashcards..."):
         result = call_groq_api(prompt, 1500)
+        # Clean any leftover labels just in case
+        if result:
+            result = result.replace("Front:", "").replace("Back:", "").replace("**Front:**", "").replace("**Back:**", "")
         return result if result else "Flashcards failed. Try again."
 
 # Ask professor
@@ -475,7 +497,9 @@ with tab3:
             st.session_state.chat_history.append({"role": "assistant", "content": answer})
             st.rerun()
         
-        st.button("Clear chat", key="clear_chat")
+        if st.button("Clear chat", key="clear_chat"):
+            st.session_state.chat_history = []
+            st.rerun()
 
 # Footer
 st.markdown("---")
@@ -485,5 +509,3 @@ st.markdown("""
     <p><strong>Made with Assembly AI and Groq AI</strong></p>
 </div>
 """, unsafe_allow_html=True)
-
-
