@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS for styling - FIXED CURSOR ISSUE
+
 st.markdown("""
 <style>
 :root {
