@@ -12,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS for styling
+# CSS for styling - FIXED CURSOR ISSUE
 st.markdown("""
 <style>
 :root {
@@ -64,7 +64,6 @@ h1, h2, h3 {
     transform: translateY(0) !important;
 }
 
-/* Large modern buttons for generate section */
 .large-btn button {
     padding: 18px 32px !important;
     font-size: 16px !important;
@@ -90,6 +89,7 @@ h1, h2, h3 {
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
 }
 
+/* FIXED: Transcript area cursor - no more block emoji */
 .transcript-area textarea {
     background-color: #0A0E27 !important;
     color: #E0F2FE !important;
@@ -99,10 +99,11 @@ h1, h2, h3 {
     padding: 15px !important;
     font-size: 14px !important;
     cursor: text !important;
+    pointer-events: none !important;
 }
 
 .transcript-area {
-    cursor: text !important;
+    cursor: default !important;
 }
 
 .card {
@@ -248,38 +249,32 @@ TRANSCRIPT:
         result = call_groq_api(prompt, 1500)
         return result if result else "Quiz failed. Try again."
 
-# Generate flashcards (FIXED: no Front:/Back: labels)
+# FIXED: Generate flashcards WITHOUT "Front:" text
 def generate_flashcards(transcript_text):
-    prompt = f"""Create 10 flashcards from this lecture.
+    prompt = f"""Create exactly 10 flashcards from this lecture transcript.
 
-Only output like this:
+Format EXACTLY like this (NO "Front:" or "Back:" labels):
 
 Card 1:
-[question/term]
-[answer]
+What is X?
+X is Y
 
 Card 2:
-[question/term]
-[answer]
+Define Z
+Z means W
 
-...
-
-Card 10:
-[question/term]
-[answer]
-
-Do not use the words 'Front:' or 'Back:' anywhere. Just the card number, question, and answer.
-
----
+Continue to Card 10. Only question on first line after "Card N:", answer on second line. No other labels.
 
 TRANSCRIPT:
 {transcript_text[:2500]}"""
     
     with st.spinner("Creating flashcards..."):
         result = call_groq_api(prompt, 1500)
-        # Clean any leftover labels just in case
         if result:
-            result = result.replace("Front:", "").replace("Back:", "").replace("**Front:**", "").replace("**Back:**", "")
+            # Extra cleanup for any stray labels
+            result = result.replace("Front:", "").replace("Back:", "")
+            result = result.replace("**Front:**", "").replace("**Back:**", "")
+            result = result.replace("front:", "").replace("back:", "")
         return result if result else "Flashcards failed. Try again."
 
 # Ask professor
@@ -355,7 +350,7 @@ with tab1:
             st.markdown("### Transcript")
             
             st.markdown('<div class="transcript-area">', unsafe_allow_html=True)
-            transcript_display = st.text_area(
+            st.text_area(
                 "",
                 st.session_state.transcript_text,
                 height=220,
