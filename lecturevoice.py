@@ -12,7 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 st.markdown("""
 <style>
 :root {
@@ -89,7 +88,6 @@ h1, h2, h3 {
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
 }
 
-
 .transcript-area textarea {
     background-color: #0A0E27 !important;
     color: #E0F2FE !important;
@@ -99,6 +97,7 @@ h1, h2, h3 {
     padding: 15px !important;
     font-size: 14px !important;
 }
+
 .card {
     background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
     border-radius: 20px;
@@ -108,6 +107,7 @@ h1, h2, h3 {
     margin-bottom: 2rem;
     transition: all 0.3s ease;
 }
+
 .download-btn button {
     background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
     padding: 12px 24px !important;
@@ -150,22 +150,14 @@ ASSEMBLYAI_API_KEY = "db53042d34f64c23a815538eab44aa86"
 GROQ_API_KEY = "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"
 
 # Setup APIs
-try:
-    aai.settings.api_key = ASSEMBLYAI_API_KEY
-    groq_client = Groq(api_key=GROQ_API_KEY)
-except:
-    st.error("API setup failed")
+aai.settings.api_key = ASSEMBLYAI_API_KEY
+groq_client = Groq(api_key=GROQ_API_KEY)
 
 # Transcribe function
 def transcribe_audio(file_path):
-    try:
-        with st.spinner("Transcribing audio..."):
-            transcriber = aai.Transcriber()
-            transcript = transcriber.transcribe(file_path)
-            return transcript
-    except Exception as e:
-        st.error(f"Transcription failed: {str(e)}")
-        return None
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(file_path)
+    return transcript
 
 # Call Groq API
 def call_groq_api(prompt, max_tokens=1500):
@@ -187,11 +179,9 @@ def call_groq_api(prompt, max_tokens=1500):
                 temperature=0.7
             )
             return response.choices[0].message.content
-        except Exception as e:
+        except:
             if attempt < 2:
                 time.sleep(2)
-                continue
-            return None
     return None
 
 # Generate summary
@@ -206,9 +196,8 @@ def generate_summary(transcript_text):
 TRANSCRIPT:
 {transcript_text[:2500]}"""
     
-    with st.spinner("Creating summary..."):
-        result = call_groq_api(prompt, 1000)
-        return result if result else "Summary failed. Try again."
+    result = call_groq_api(prompt, 1000)
+    return result if result else "Summary failed. Try again."
 
 # Generate quiz
 def generate_quiz(transcript_text):
@@ -231,10 +220,10 @@ D) [option]
 TRANSCRIPT:
 {transcript_text[:2500]}"""
     
-    with st.spinner("Creating quiz..."):
-        result = call_groq_api(prompt, 1500)
-        return result if result else "Quiz failed. Try again."
+    result = call_groq_api(prompt, 1500)
+    return result if result else "Quiz failed. Try again."
 
+# Generate flashcards
 def generate_flashcards(transcript_text):
     prompt = f"""Create exactly 10 flashcards from this lecture transcript.
 
@@ -253,14 +242,12 @@ Continue to Card 10. Only question on first line after "Card N:", answer on seco
 TRANSCRIPT:
 {transcript_text[:2500]}"""
     
-    with st.spinner("Creating flashcards..."):
-        result = call_groq_api(prompt, 1500)
-        if result:
-            # Extra cleanup for any stray labels
-            result = result.replace("Front:", "").replace("Back:", "")
-            result = result.replace("**Front:**", "").replace("**Back:**", "")
-            result = result.replace("front:", "").replace("back:", "")
-        return result if result else "Flashcards failed. Try again."
+    result = call_groq_api(prompt, 1500)
+    if result:
+        result = result.replace("Front:", "").replace("Back:", "")
+        result = result.replace("**Front:**", "").replace("**Back:**", "")
+        result = result.replace("front:", "").replace("back:", "")
+    return result if result else "Flashcards failed. Try again."
 
 # Ask professor
 def ask_professor(question, transcript_text):
@@ -321,15 +308,16 @@ with tab1:
             f.write(uploaded_file.getbuffer())
         
         if st.button("Start transcription", use_container_width=True, key="transcribe"):
-            transcript = transcribe_audio(temp_file)
-            if transcript:
-                st.session_state.transcript = transcript
-                st.session_state.transcript_text = transcript.text
-                st.success("✅ Transcription done!")
-                try:
-                    os.remove(temp_file)
-                except:
-                    pass
+            with st.spinner("Transcribing audio..."):
+                transcript = transcribe_audio(temp_file)
+                if transcript:
+                    st.session_state.transcript = transcript
+                    st.session_state.transcript_text = transcript.text
+                    st.success("✅ Transcription done!")
+                    try:
+                        os.remove(temp_file)
+                    except:
+                        pass
         
         if st.session_state.transcript:
             st.markdown("### Transcript")
@@ -350,28 +338,31 @@ with tab1:
             with col1:
                 st.markdown('<div class="large-btn">', unsafe_allow_html=True)
                 if st.button("📝 Summary", use_container_width=True, key="summary_gen"):
-                    result = generate_summary(st.session_state.transcript_text)
-                    st.session_state.summary = result
-                    st.session_state.materials_ready = True
-                    st.success("Summary created! Check Study Materials tab")
+                    with st.spinner("Creating summary..."):
+                        result = generate_summary(st.session_state.transcript_text)
+                        st.session_state.summary = result
+                        st.session_state.materials_ready = True
+                        st.success("Summary created! Check Study Materials tab")
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="large-btn">', unsafe_allow_html=True)
                 if st.button("❓ Quiz", use_container_width=True, key="quiz_gen"):
-                    result = generate_quiz(st.session_state.transcript_text)
-                    st.session_state.quiz = result
-                    st.session_state.materials_ready = True
-                    st.success("Quiz created! Check Study Materials tab")
+                    with st.spinner("Creating quiz..."):
+                        result = generate_quiz(st.session_state.transcript_text)
+                        st.session_state.quiz = result
+                        st.session_state.materials_ready = True
+                        st.success("Quiz created! Check Study Materials tab")
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
                 st.markdown('<div class="large-btn">', unsafe_allow_html=True)
                 if st.button("🎴 Flashcards", use_container_width=True, key="flash_gen"):
-                    result = generate_flashcards(st.session_state.transcript_text)
-                    st.session_state.flashcards = result
-                    st.session_state.materials_ready = True
-                    st.success("Flashcards created! Check Study Materials tab")
+                    with st.spinner("Creating flashcards..."):
+                        result = generate_flashcards(st.session_state.transcript_text)
+                        st.session_state.flashcards = result
+                        st.session_state.materials_ready = True
+                        st.success("Flashcards created! Check Study Materials tab")
                 st.markdown('</div>', unsafe_allow_html=True)
             
             st.download_button(
