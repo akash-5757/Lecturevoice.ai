@@ -98,7 +98,6 @@ h1, h2, h3 {
     border-radius: 10px !important;
     padding: 15px !important;
     font-size: 14px !important;
-    pointer-events: none !important;
 }
 .card {
     background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
@@ -109,13 +108,6 @@ h1, h2, h3 {
     margin-bottom: 2rem;
     transition: all 0.3s ease;
 }
-
-.card:hover {
-    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
-    border-color: rgba(99, 102, 241, 0.3);
-    transform: translateY(-4px);
-}
-
 .download-btn button {
     background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%) !important;
     padding: 12px 24px !important;
