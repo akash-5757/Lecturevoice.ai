@@ -89,7 +89,7 @@ h1, h2, h3 {
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2) !important;
 }
 
-/* FIXED: Transcript area cursor - no more block emoji */
+
 .transcript-area textarea {
     background-color: #0A0E27 !important;
     color: #E0F2FE !important;
@@ -98,14 +98,8 @@ h1, h2, h3 {
     border-radius: 10px !important;
     padding: 15px !important;
     font-size: 14px !important;
-    cursor: text !important;
     pointer-events: none !important;
 }
-
-.transcript-area {
-    cursor: default !important;
-}
-
 .card {
     background: linear-gradient(135deg, var(--surface) 0%, var(--surface-light) 100%);
     border-radius: 20px;
